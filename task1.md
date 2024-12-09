@@ -27,7 +27,14 @@
    ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Bitmap Heap Scan on t_books  (cost=12.00..16.01 rows=1 width=33) (actual time=0.012..0.013 rows=0 loops=1)
+   Recheck Cond: (category IS NULL)
+   ->  Bitmap Index Scan on t_books_brin_cat_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.011..0.011 rows=0 loops=1)
+         Index Cond: (category IS NULL)
+   Planning Time: 0.080 ms
+   Execution Time: 0.034 ms
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -45,7 +52,17 @@
    ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=14.893..14.895 rows=0 loops=1)
+   Recheck Cond: ((category)::text = 'INDEX'::text)
+   Rows Removed by Index Recheck: 150000
+   Filter: ((author)::text = 'SYSTEM'::text)
+   Heap Blocks: lossy=1225
+   ->  Bitmap Index Scan on t_books_brin_cat_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.044..0.045 rows=12250 loops=1)
+         Index Cond: ((category)::text = 'INDEX'::text)
+   Planning Time: 0.155 ms
+   Execution Time: 14.915 ms
+   ```
    
    *Объясните результат (обратите внимание на bitmap scan):*
    [Ваше объяснение]
@@ -59,7 +76,17 @@
    ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Sort  (cost=3100.11..3100.12 rows=5 width=7) (actual time=29.564..29.567 rows=6 loops=1)
+   Sort Key: category
+   Sort Method: quicksort  Memory: 25kB
+   ->  HashAggregate  (cost=3100.00..3100.05 rows=5 width=7) (actual time=29.541..29.544 rows=6 loops=1)
+         Group Key: category
+         Batches: 1  Memory Usage: 24kB
+         ->  Seq Scan on t_books  (cost=0.00..2725.00 rows=150000 width=7) (actual time=0.005..7.662 rows=150000 loops=1)
+   Planning Time: 0.079 ms
+   Execution Time: 29.604 ms
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -73,7 +100,15 @@
    ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Aggregate  (cost=3100.04..3100.05 rows=1 width=8) (actual time=13.027..13.028 rows=1 loops=1)
+   ->  Seq Scan on t_books  (cost=0.00..3100.00 rows=15 width=0) (actual time=13.023..13.023 rows=0 loops=1)
+         Filter: ((author)::text ~~ 'S%'::text)
+         Rows Removed by Filter: 150000
+   Planning Time: 0.108 ms
+   Execution Time: 13.057 ms
+
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -92,7 +127,14 @@
     ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Aggregate  (cost=3476.88..3476.89 rows=1 width=8) (actual time=42.559..42.561 rows=1 loops=1)
+   ->  Seq Scan on t_books  (cost=0.00..3475.00 rows=750 width=0) (actual time=42.551..42.553 rows=1 loops=1)
+         Filter: (lower((title)::text) ~~ 'o%'::text)
+         Rows Removed by Filter: 149999
+   Planning Time: 0.067 ms
+   Execution Time: 42.583 ms
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
@@ -118,7 +160,16 @@
     ```
    
    *План выполнения:*
-   [Вставьте план выполнения]
+   ```
+   Bitmap Heap Scan on t_books  (cost=12.00..16.02 rows=1 width=33) (actual time=0.987..0.988 rows=0 loops=1)
+   Recheck Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))
+   Rows Removed by Index Recheck: 8844
+   Heap Blocks: lossy=73
+   ->  Bitmap Index Scan on t_books_brin_cat_auth_idx  (cost=0.00..12.00 rows=1 width=0) (actual time=0.021..0.022 rows=730 loops=1)
+         Index Cond: (((category)::text = 'INDEX'::text) AND ((author)::text = 'SYSTEM'::text))
+   Planning Time: 0.211 ms
+   Execution Time: 1.018 ms
+   ```
    
    *Объясните результат:*
    [Ваше объяснение]
