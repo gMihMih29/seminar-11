@@ -29,7 +29,15 @@
     ```
     
     *План выполнения:*
-    [Вставьте план выполнения]
+    ```
+    Bitmap Heap Scan on t_books  (cost=21.03..1335.59 rows=750 width=33) (actual time=0.019..0.020 rows=1 loops=1)
+     "  Recheck Cond: (to_tsvector('english'::regconfig, (title)::text) @@ '''expert'''::tsquery)"
+     Heap Blocks: exact=1
+     ->  Bitmap Index Scan on t_books_fts_idx  (cost=0.00..20.84 rows=750 width=0) (actual time=0.014..0.015 rows=1 loops=1)
+     "        Index Cond: (to_tsvector('english'::regconfig, (title)::text) @@ '''expert'''::tsquery)"
+     Planning Time: 0.375 ms
+     Execution Time: 0.045 ms
+    ```
     
     *Объясните результат:*
     [Ваше объяснение]
@@ -90,7 +98,12 @@
      ```
      
      *План выполнения:*
-     [Вставьте план выполнения]
+     ```
+     Index Scan using t_lookup_pk on t_lookup  (cost=0.42..8.44 rows=1 width=23) (actual time=0.014..0.014 rows=1 loops=1)
+     Index Cond: ((item_key)::text = '0000000455'::text)
+     Planning Time: 0.202 ms
+     Execution Time: 0.026 ms
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -102,7 +115,12 @@
      ```
      
      *План выполнения:*
-     [Вставьте план выполнения]
+     ```
+     Index Scan using t_lookup_clustered_pkey on t_lookup_clustered  (cost=0.42..8.44 rows=1 width=23) (actual time=0.030..0.031 rows=1 loops=1)
+     Index Cond: ((item_key)::text = '0000000455'::text)
+     Planning Time: 0.124 ms
+     Execution Time: 0.044 ms
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -125,7 +143,13 @@
      ```
      
      *План выполнения:*
-     [Вставьте план выполнения]
+     ```
+     Index Scan using t_lookup_value_idx on t_lookup  (cost=0.42..8.44 rows=1 width=23) (actual time=0.016..0.016 rows=0 loops=1)
+     Index Cond: ((item_value)::text = 'T_BOOKS'::text)
+     Planning Time: 0.312 ms
+     Execution Time: 0.030 ms
+
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
@@ -137,7 +161,12 @@
      ```
      
      *План выполнения:*
-     [Вставьте план выполнения]
+     ```
+     Index Scan using t_lookup_clustered_value_idx on t_lookup_clustered  (cost=0.42..8.44 rows=1 width=23) (actual time=0.014..0.014 rows=0 loops=1)
+     Index Cond: ((item_value)::text = 'T_BOOKS'::text)
+     Planning Time: 0.188 ms
+     Execution Time: 0.025 ms
+     ```
      
      *Объясните результат:*
      [Ваше объяснение]
